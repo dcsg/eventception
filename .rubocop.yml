@@ -1,0 +1,25 @@
+AllCops:
+  TargetRubyVersion: 2.2
+
+inherit_from: .rubocop_todo.yml
+
+Style/Documentation:
+  Enabled: false
+
+Style/MultilineIfModifier:
+  Enabled: false
+
+Style/RaiseArgs:
+  Enabled: false
+
+Lint/UnneededDisable:
+  Enabled: false
+
+Metrics/LineLength:
+  Max: 120
+
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma
+
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: comma
