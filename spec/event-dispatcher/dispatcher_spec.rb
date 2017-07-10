@@ -1,7 +1,10 @@
 require 'spec_helper'
+require 'support/listener'
+require 'support/subscriber'
 
 describe EventDispatcher::Dispatcher do
-  let(:listener) { proc { puts 'my listener' } }
+  let(:listener) { EventDispatcher::Support::Listener.new }
+  let(:subscriber) { EventDispatcher::Support::Subscriber.new }
   let(:event_name) { :on_after }
   let(:priority) { 0 }
 
@@ -133,10 +136,30 @@ describe EventDispatcher::Dispatcher do
   end
 
   describe '#add_subscriber' do
-    # TODO
+    before do
+      subject.add_subscriber(subscriber: subscriber)
+    end
+
+    it 'subscribes two events' do
+      listeners = subject.listeners
+      expect(listeners.size).to eq 2
+      listeners.each do |event_name, listener|
+        expect(listener[0].size).to eq 1
+      end
+    end
   end
 
   describe '#remove_subscriber' do
-    # TODO
+    before do
+      subject.add_subscriber(subscriber: subscriber)
+    end
+
+    it 'removes the listeners from the subscriber' do
+      expect(subject.listeners.size).to eq 2
+      subject.remove_subscriber(subscriber: subscriber)
+      subject.listeners.each do |event_name, listener|
+        expect(listener[0].size).to eq 0
+      end
+    end
   end
 end
