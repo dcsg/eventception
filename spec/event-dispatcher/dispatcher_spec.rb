@@ -143,8 +143,8 @@ describe EventDispatcher::Dispatcher do
     it 'subscribes two events' do
       listeners = subject.listeners
       expect(listeners.size).to eq 2
-      listeners.each do |event_name, listener|
-        expect(listener[0].size).to eq 1
+      listeners.each do |_event_name, listener|
+        expect(listener[priority].size).to eq 1
       end
     end
   end
@@ -157,8 +157,8 @@ describe EventDispatcher::Dispatcher do
     it 'removes the listeners from the subscriber' do
       expect(subject.listeners.size).to eq 2
       subject.remove_subscriber(subscriber: subscriber)
-      subject.listeners.each do |event_name, listener|
-        expect(listener[0].size).to eq 0
+      subject.listeners.each do |_event_name, listener|
+        expect(listener[priority].size).to eq 0
       end
     end
   end
