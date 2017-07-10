@@ -31,13 +31,13 @@ dispatcher = EventDispatcher::Dispatcher.new
 
 ```ruby
 class MyListener
-  def on_foo_action(event)
+  def on_foo_action(_event)
     puts 'on foo action'
   end
 end
 
 listener = MyListener.new
-dispatcher.add_listener('my.foo.action', [$listener, 'on_foo_action']);
+dispatcher.add_listener('my.foo.action', [listener, 'on_foo_action']);
 ```
 
 #### Creating and Dispatching an Event
