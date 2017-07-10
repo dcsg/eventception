@@ -8,8 +8,7 @@ A Ruby Event Dispatcher based on [Symfony Event Dispatcher](https://symfony.com/
 
 Add the following to your `Gemfile`:
 ```ruby
-gem 'event-dispatcher', '~> 0.0.1',
-  git: 'https://github.com/dcsg/ruby-event-dispatcher'
+gem 'event-dispatcher', git: 'https://github.com/dcsg/ruby-event-dispatcher'
 ```
 
 ## How to use
@@ -38,7 +37,7 @@ class MyListener
 end
 
 listener = MyListener.new
-dispatcher.add_listener('my.foo.action', array($listener, 'on_foo_action'));
+dispatcher.add_listener('my.foo.action', [$listener, 'on_foo_action']);
 ```
 
 #### Creating and Dispatching an Event
