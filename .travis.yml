@@ -1,19 +1,14 @@
 language: ruby
+rvm:
+  - 2.4.1
+  - 2.3.4
+  - 2.2.7
+  - ruby-head
+
+script:
+  - bundle exec rspec
 
 sudo: false
-
-matrix:
-  include:
-    - rvm: 2.4.1
-    - rvm: 2.3.4
-    - rvm: 2.2.7
-    - rvm: ruby-head
-    - rvm: jruby-head
-    - rvm: rbx-2
-  allow_failures:
-    - rvm: ruby-head
-    - rvm: jruby-head
-    - rvm: rbx-2
 
 bundler_args: --without development
 
