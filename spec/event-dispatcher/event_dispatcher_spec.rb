@@ -133,8 +133,10 @@ describe EventDispatcher::Dispatcher do
   end
 
   describe '#add_subscriber' do
+    # TODO
   end
 
   describe '#remove_subscriber' do
+    # TODO
   end
 end
