@@ -1,5 +1,5 @@
 $LOAD_PATH.push File.expand_path('../lib', __FILE__)
-require 'event-dispatcher/version'
+require 'event_dispatcher/version'
 
 Gem::Specification.new do |spec|
   spec.name        = 'event-dispatcher'
