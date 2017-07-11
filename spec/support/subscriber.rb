@@ -1,4 +1,4 @@
-require 'event-dispatcher/base_subscriber'
+require 'event_dispatcher'
 
 module EventDispatcher
   module Support
