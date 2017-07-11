@@ -22,7 +22,7 @@ In general, a single dispatcher is created, which maintains a registry of listen
 When an event is dispatched via the dispatcher, it notifies all listeners registered with that event:
 
 ```ruby
-require 'event-dispatcher'
+require 'event_dispatcher/dispatcher'
 
 dispatcher = EventDispatcher::Dispatcher.new
 ```
@@ -30,36 +30,47 @@ dispatcher = EventDispatcher::Dispatcher.new
 #### Adding Listeners
 
 ```ruby
-class MyListener
-  def on_foo_action(_event)
-    puts 'on foo action'
+class TodoListener
+  def on_creation(event)
+    puts "created a new to-do with title: '#{event.todo.title}'"
   end
 end
 
-listener = MyListener.new
-dispatcher.add_listener('my.foo.action', [listener, 'on_foo_action']);
+listener = TodoListener.new
+dispatcher.add_listener('todo.created', [listener, 'on_creation']);
 ```
 
 #### Creating and Dispatching an Event
 
 ##### Creating the Event
 ```ruby
-class OrderPlacedEvent < BaseEvent
-    NAME = 'order.placed'.freeze
+require 'event_dispatcher/base_event'
+ class TodoCreatedEvent < BaseEvent
+    NAME = 'todo.created'.freeze
 
-    attr_reader :order
+    attr_reader :todo
 
-    def initialize(order)
-      @order = order
+    def initialize(todo)
+      @todo = todo
     end
 end
 ```
 
 ##### Dispatching the Event
 ```ruby
-order = Order.new
-event = OrderPlacedEvent.new(order)
-dispatcher.dispatch(OrderPlacedEvent::NAME, event)
+class Todo
+    attr_reader :title
+
+    def initialize(title:)
+      @title = title
+    end
+end
+
+todo = Todo.new('My To-do')
+event = TodoCreatedEvent.new(todo)
+dispatcher.dispatch(TodoCreatedEvent::NAME, event)
+
+# STDOUT: created a new to-do with title: 'My To-do'
 ```
 
 ## Contributing
