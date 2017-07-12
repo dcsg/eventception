@@ -3,11 +3,11 @@ require 'support/listener'
 require 'support/subscriber'
 require 'support/test_event'
 
-describe EventDispatcher::Dispatcher do
-  let(:listener) { EventDispatcher::Support::Listener.new }
-  let(:listener_callable) { [listener, 'on_before'] }
-  let(:subscriber) { EventDispatcher::Support::Subscriber.new }
-  let(:event_name) { EventDispatcher::Support::TestEvent::BEFORE }
+describe Eventception::Dispatcher do
+  let(:listener) { Eventception::Support::Listener.new }
+  let(:listener_callable) { [Eventception::Support::Listener.new, 'on_before'] }
+  let(:subscriber) { Eventception::Support::Subscriber.new }
+  let(:event_name) { :on_after }
   let(:priority) { 0 }
 
   describe '#listeners?' do
@@ -178,10 +178,10 @@ describe EventDispatcher::Dispatcher do
         expect(subscriber).to receive('on_after').and_call_original
 
         expect {
-          subject.dispatch(event_name: EventDispatcher::Support::TestEvent::BEFORE)
+          subject.dispatch(event_name: Eventception::Support::TestEvent::BEFORE)
         }.to output(/on before, propagation stopped/).to_stdout
         expect {
-          subject.dispatch(event_name: EventDispatcher::Support::TestEvent::AFTER)
+          subject.dispatch(event_name: Eventception::Support::TestEvent::AFTER)
         }.to output(/on after, propagation stopped/).to_stdout
       end
     end

@@ -1,6 +1,6 @@
-require 'event_dispatcher'
+require 'eventception'
 
-module EventDispatcher
+module Eventception
   module Examples
     module TodoList
       class TodoCreatedEvent < Event

@@ -1,4 +1,4 @@
-module EventDispatcher
+module Eventception
   class Dispatcher
     private
 
@@ -26,7 +26,7 @@ module EventDispatcher
     # == Returns:
     #   The Event.
     #
-    def dispatch(event_name:, event: EventDispatcher::Event.new)
+    def dispatch(event_name:, event: Eventception::Event.new)
       return event unless listeners_for?(event_name: event_name)
 
       do_dispatch(listeners: listeners_for(event_name: event_name), event: event)

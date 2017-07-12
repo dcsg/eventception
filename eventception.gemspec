@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
 $LOAD_PATH.push File.expand_path('../lib', __FILE__)
-require 'event_dispatcher/version'
+require 'eventception'
 
 Gem::Specification.new do |spec|
-  spec.name        = 'event-dispatcher'
-  spec.version     = EventDispatcher::VERSION
+  spec.name        = 'eventception'
+  spec.version     = Eventception::VERSION
   spec.authors     = ['Daniel Gomes']
   spec.email       = ['danielcesargomes@gmail.com']
-  spec.homepage    = 'https://github.com/dcsg/ruby-event-dispatcher'
-  spec.summary     = 'A simple Ruby Event Dispatcher.'
-  spec.description = 'A Ruby Event Dispatcher ported from Symfony Event Dispatcher.'
+  spec.homepage    = 'https://github.com/dcsg/eventception'
+  spec.summary     = 'Eventception - a lightweight and simple Ruby Event System.'
+  spec.description = 'A lightweight and simple Ruby Event System inspired on Symfony Event Dispatcher.'
   spec.license     = 'MIT'
 
   spec.files         = Dir['**/*'].keep_if { |file| File.file?(file) }

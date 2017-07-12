@@ -1,4 +1,4 @@
-module EventDispatcher
+module Eventception
   class Event
     private
 

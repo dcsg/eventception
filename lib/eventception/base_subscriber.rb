@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-module EventDispatcher
+module Eventception
   class BaseSubscriber
     def subscribed_events
       raise NoMethodError, 'Method needs to be implement. Consider extend this class.'
