@@ -27,9 +27,9 @@ module Eventception
     #   The Event.
     #
     def dispatch(event_name:, event: Eventception::Event.new)
-      return event unless listeners_for?(event_name: event_name)
-
-      do_dispatch(listeners: listeners_for(event_name: event_name), event: event)
+      if listeners_for?(event_name: event_name)
+        do_dispatch(listeners: listeners_for(event_name: event_name), event: event)
+      end
 
       event
     end
@@ -43,7 +43,7 @@ module Eventception
       return [] if event_listeners.empty?
 
       event_listeners.each_key do |event_name|
-        sort_listeners(event_name) if sorted[event_name].nil? || sorted[event_name].empty?
+        sort_listeners(event_name) if sorted[event_name].empty?
       end
 
       sorted
@@ -55,7 +55,7 @@ module Eventception
     #   Boolean
     #
     def listeners?
-      !listeners.empty?
+      listeners.any?
     end
 
     # Gets all listeners for the specific event sorted by descending priority.
@@ -64,9 +64,9 @@ module Eventception
     #   The event listeners for the specific event sorted by descending priority.
     #
     def listeners_for(event_name:)
-      return [] if !event_listeners.key?(event_name) || event_listeners[event_name].empty?
+      return [] if event_listeners[event_name].empty?
 
-      sort_listeners(event_name) if sorted[event_name].nil? || sorted[event_name].empty?
+      sort_listeners(event_name) if sorted[event_name].empty?
 
       sorted[event_name]
     end
@@ -77,7 +77,7 @@ module Eventception
     #   Boolean
     #
     def listeners_for?(event_name:)
-      event_listeners.key?(event_name) && !event_listeners[event_name].empty?
+      event_listeners[event_name].any?
     end
 
     # Add an event listener that listens to the specified event.
@@ -97,18 +97,16 @@ module Eventception
     end
 
     def remove_listener(event_name:, listener:)
-      return if !event_listeners.key?(event_name) || event_listeners[event_name].empty?
+      return unless listeners_for?(event_name: event_name)
 
       listener_for_event = event_listeners.fetch(event_name)
-      listener_for_event.each do |priority, event_listeners|
-        event_listeners.each do |event_listener|
-          if event_listener == listener
-            event_listeners.delete(listener)
-            sorted.delete(event_name)
-          end
+
+      listener_for_event.each do |priority, priority_listeners|
+        if priority_listeners.delete(listener)
+          sorted.delete(event_name)
         end
 
-        listener_for_event.delete(priority) if event_listeners.empty?
+        listener_for_event.delete(priority) if priority_listeners.empty?
       end
 
       event_listeners.delete(event_name) if listener_for_event.empty?
@@ -156,11 +154,13 @@ module Eventception
     def do_dispatch(listeners:, event:)
       listeners.each do |_priority, priority_listeners|
         priority_listeners.each do |listener|
-          break if event.propagation_stopped?
+          return if event.propagation_stopped?
 
           listener[0].public_send(listener[1], event)
         end
       end
+
+      nil
     end
 
     private
@@ -172,7 +172,7 @@ module Eventception
     #   The event name
     #
     def sort_listeners(event_name)
-      sorted[event_name] = event_listeners[event_name].sort.reverse.to_h
+      sorted[event_name] = event_listeners[event_name].sort_by { |key, _| -key }.to_h
     end
   end
 end
