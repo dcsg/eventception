@@ -1,4 +1,4 @@
-module EventDispatcher
+module Eventception
   module Support
     class Listener
       def on_before(_event)

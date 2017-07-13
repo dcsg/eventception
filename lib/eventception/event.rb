@@ -1,14 +1,12 @@
-module EventDispatcher
-  class BaseEvent
+module Eventception
+  class Event
     private
 
-    attr_reader :propagation_stopped
+    def propagation_stopped
+      @propagation_stopped ||= false
+    end
 
     public
-
-    def initialize
-      @propagation_stopped = false
-    end
 
     def propagation_stopped?
       propagation_stopped

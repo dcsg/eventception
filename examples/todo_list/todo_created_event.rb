@@ -1,9 +1,9 @@
-require 'event_dispatcher/base_event'
+require 'eventception'
 
-module EventDispatcher
+module Eventception
   module Examples
     module TodoList
-      class TodoCreatedEvent < BaseEvent
+      class TodoCreatedEvent < Event
         NAME = 'todo.created'.freeze
 
         attr_reader :todo
