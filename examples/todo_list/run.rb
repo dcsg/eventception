@@ -5,8 +5,11 @@ require_relative 'todo'
 
 # configure the event dispatcher and register the listener
 dispatcher = Eventception::Dispatcher.new
-listener = [TodoList::TodoListener.new, 'on_creation']
-dispatcher.add_listener(event_name: TodoList::TodoCreatedEvent::NAME, listener: listener)
+dispatcher.add_listener(
+  event_name: TodoList::TodoCreatedEvent::NAME,
+  listener: TodoList::TodoListener.new,
+  listener_method: 'on_creation',
+)
 
 # create a new to-do and dispatch the event
 todo = TodoList::Todo.new(title: 'Emit and Event', description: 'Event emitted')

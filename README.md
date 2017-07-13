@@ -30,6 +30,7 @@ dispatcher = Eventception::Dispatcher.new
 #### Adding Listeners
 
 ```ruby
+require 'eventception'
 class TodoListener
   def on_creation(event)
     puts "created a new to-do with title: '#{event.todo.title}'"
@@ -37,7 +38,11 @@ class TodoListener
 end
 
 listener = TodoListener.new
-dispatcher.add_listener(event_name: 'todo.created', listener: [listener, 'on_creation']);
+dispatcher.add_listener(
+  event_name: 'todo.created',
+  listener: listener,
+  listener_method: 'on_creation'
+)
 ```
 
 #### Creating and Dispatching an Event
@@ -45,7 +50,7 @@ dispatcher.add_listener(event_name: 'todo.created', listener: [listener, 'on_cre
 ##### Creating the Event
 ```ruby
 require 'eventception'
- class TodoCreatedEvent < Event
+class TodoCreatedEvent < Eventception::Event
     NAME = 'todo.created'.freeze
 
     attr_reader :todo
@@ -75,6 +80,7 @@ dispatcher.dispatch(TodoCreatedEvent::NAME, event)
 
 ## Contributing
 
-## Kudos
+## Contributors
 
- * [Ivo Anjo](https://github.com/ivoanjo) - For the name for the project and the code reviews
+ * [Daniel Gomes](https://github.com/dcsg)
+ * [Ivo Anjo](https://github.com/ivoanjo)

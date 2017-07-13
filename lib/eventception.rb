@@ -1,4 +1,5 @@
 require 'eventception/event'
+require 'eventception/listener_handler'
 require 'eventception/dispatcher'
 require 'eventception/base_subscriber'
 require 'eventception/version'
