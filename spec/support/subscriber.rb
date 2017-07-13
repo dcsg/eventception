@@ -1,12 +1,13 @@
 require 'event_dispatcher'
+require_relative 'test_event'
 
 module EventDispatcher
   module Support
-    class Subscriber < BaseSubscriber
+    class Subscriber < EventDispatcher::BaseSubscriber
       def subscribed_events
         [
-          { event_name: :on_before, method: [self, 'on_before'] },
-          { event_name: :on_after, method: [self, 'on_after'] },
+          { event_name: TestEvent::BEFORE, listener_method: 'on_before', priority: 0 },
+          { event_name: TestEvent::AFTER, listener_method: 'on_after' },
         ]
       end
 

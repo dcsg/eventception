@@ -3,7 +3,7 @@ require 'event_dispatcher'
 module EventDispatcher
   module Examples
     module TodoList
-      class TodoCreatedEvent < BaseEvent
+      class TodoCreatedEvent < Event
         NAME = 'todo.created'.freeze
 
         attr_reader :todo
