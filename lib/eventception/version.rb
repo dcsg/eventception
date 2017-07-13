@@ -1,3 +1,3 @@
 module Eventception
-  VERSION = '0.0.1-unreleased'.freeze
+  VERSION = '0.0.1'.freeze
 end
