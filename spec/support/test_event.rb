@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'event_dispatcher'
+require 'eventception'
 
-module EventDispatcher
+module Eventception
   module Support
-    class TestEvent < EventDispatcher::Event
+    class TestEvent < Eventception::Event
       BEFORE = 'test.before'
       AFTER = 'test.after'
     end

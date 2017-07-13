@@ -1,14 +1,14 @@
-## A lightweight Event Dispatcher system
+## Eventception
 
-[![Build Status](https://travis-ci.org/dcsg/ruby-event-dispatcher.svg?branch=master)](https://travis-ci.org/dcsg/ruby-event-dispatcher)
+[![Build Status](https://travis-ci.org/dcsg/eventception.svg?branch=master)](https://travis-ci.org/dcsg/eventception)
 
-A lightweight Event Dispatcher system ported from [Symfony Event Dispatcher](https://symfony.com/doc/current/components/event_dispatcher.html).
+Eventception is a lightweight and simple Ruby Event System inspired on [Symfony Event Dispatcher](https://symfony.com/doc/current/components/event_dispatcher.html).
 
 ## How to Install
 
 Add the following to your `Gemfile`:
 ```ruby
-gem 'event-dispatcher'
+gem 'eventception'
 ```
 
 ## How to use
@@ -22,9 +22,9 @@ In general, a single dispatcher is created, which maintains a registry of listen
 When an event is dispatched via the dispatcher, it notifies all listeners registered with that event:
 
 ```ruby
-require 'event_dispatcher'
+require 'eventception'
 
-dispatcher = EventDispatcher::Dispatcher.new
+dispatcher = Eventception::Dispatcher.new
 ```
 
 #### Adding Listeners
@@ -44,7 +44,7 @@ dispatcher.add_listener(event_name: 'todo.created', listener: [listener, 'on_cre
 
 ##### Creating the Event
 ```ruby
-require 'event_dispatcher'
+require 'eventception'
  class TodoCreatedEvent < Event
     NAME = 'todo.created'.freeze
 
@@ -74,3 +74,7 @@ dispatcher.dispatch(TodoCreatedEvent::NAME, event)
 ```
 
 ## Contributing
+
+## Kudos
+
+ * [Ivo Anjo](https://github.com/ivoanjo) - For the name for the project and the code reviews

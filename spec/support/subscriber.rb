@@ -1,9 +1,9 @@
-require 'event_dispatcher'
+require 'eventception'
 require_relative 'test_event'
 
-module EventDispatcher
+module Eventception
   module Support
-    class Subscriber < EventDispatcher::BaseSubscriber
+    class Subscriber < Eventception::BaseSubscriber
       def subscribed_events
         [
           { event_name: TestEvent::BEFORE, listener_method: 'on_before', priority: 0 },

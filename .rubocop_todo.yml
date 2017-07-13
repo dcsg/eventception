@@ -29,7 +29,7 @@ Metrics/MethodLength:
 # IgnoredMethods: lambda, proc, it
 Style/BlockDelimiters:
   Exclude:
-    - 'spec/event_dispatcher/dispatcher_spec.rb'
+    - 'spec/eventception/dispatcher_spec.rb'
 
 # Offense count: 2
 # Cop supports --auto-correct.

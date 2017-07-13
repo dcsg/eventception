@@ -1,4 +1,4 @@
-module EventDispatcher
+module Eventception
   module Examples
     module TodoList
       class TodoListener

@@ -1,4 +1,4 @@
-module EventDispatcher
+module Eventception
   class Dispatcher
     private
 
@@ -26,7 +26,7 @@ module EventDispatcher
     # == Returns:
     #   The Event.
     #
-    def dispatch(event_name:, event: EventDispatcher::Event.new)
+    def dispatch(event_name:, event: Eventception::Event.new)
       return event unless listeners_for?(event_name: event_name)
 
       do_dispatch(listeners: listeners_for(event_name: event_name), event: event)
@@ -154,8 +154,8 @@ module EventDispatcher
     #   The event
     #
     def do_dispatch(listeners:, event:)
-      listeners.each do |_priority, event_listeners|
-        event_listeners.each do |listener|
+      listeners.each do |_priority, priority_listeners|
+        priority_listeners.each do |listener|
           break if event.propagation_stopped?
 
           listener[0].public_send(listener[1], event)
