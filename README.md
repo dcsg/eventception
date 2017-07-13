@@ -1,6 +1,6 @@
 ## Eventception
 
-[![Build Status](https://travis-ci.org/dcsg/eventception.svg?branch=master)](https://travis-ci.org/dcsg/eventception)
+[![Build Status](https://travis-ci.org/dcsg/eventception.svg?branch=master)](https://travis-ci.org/dcsg/eventception) [![Code Climate](https://codeclimate.com/github/dcsg/eventception/badges/gpa.svg)](https://codeclimate.com/github/dcsg/eventception) [![Test Coverage](https://codeclimate.com/github/dcsg/eventception/badges/coverage.svg)](https://codeclimate.com/github/dcsg/eventception/coverage)
 
 Eventception is a lightweight and simple Ruby Event System inspired on [Symfony Event Dispatcher](https://symfony.com/doc/current/components/event_dispatcher.html).
 

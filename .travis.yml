@@ -1,11 +1,22 @@
+env:
+  global:
+    - SIMPLECOV_ENABLED=1
+    - CC_TEST_REPORTER_ID=b7cacaaf8cd892926f18b6a494de52ade74bfc7f68befcba99b5adaa3823b662
+    - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
 language: ruby
 dist: trusty
 sudo: false
 before_install:
   - gem update --system
   - gem install bundler
+before_script:
+  - curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+  - chmod +x ./cc-test-reporter
+  - ./cc-test-reporter before-build
 script:
   - bundle exec rake
+after_script:
+  - if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then ./cc-test-reporter after-build --exit-code $TRAVIS_TEST_RESULT; fi
 rvm:
   - 2.4.1
   - 2.3.4
