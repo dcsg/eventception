@@ -6,8 +6,8 @@ require 'eventception'
 Gem::Specification.new do |spec|
   spec.name        = 'eventception'
   spec.version     = Eventception::VERSION
-  spec.authors     = ['Daniel Gomes']
-  spec.email       = ['danielcesargomes@gmail.com']
+  spec.authors     = ['Daniel Gomes', 'Ivo Anjo']
+  spec.email       = ['danielcesargomes@gmail.com', 'ivo.anjo@ist.utl.pt']
   spec.homepage    = 'https://github.com/dcsg/eventception'
   spec.summary     = 'Eventception - a lightweight and simple Ruby Event System.'
   spec.description = 'A lightweight and simple Ruby Event System inspired on Symfony Event Dispatcher.'
