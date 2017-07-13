@@ -98,20 +98,20 @@ module Eventception
     # priority::
     #   The higher this value, the earlier an event listener will be triggered in the chain (defaults to 0)
     #
-    def add_listener(event_name:, listener:, priority: 0)
-      event_listeners[event_name][priority] << listener
+    def add_listener(event_name:, listener_handler:, priority: 0)
+      event_listeners[event_name][priority] << listener_handler
       sorted.delete(event_name)
 
-      listener
+      listener_handler
     end
 
-    def remove_listener(event_name:, listener:)
+    def remove_listener(event_name:, listener_handler:)
       return unless listeners_for?(event_name: event_name)
 
       listener_for_event = event_listeners.fetch(event_name)
 
       listener_for_event.each do |priority, priority_listeners|
-        sorted.delete(event_name) if priority_listeners.delete(listener)
+        sorted.delete(event_name) if priority_listeners.delete(listener_handler)
 
         listener_for_event.delete(priority) if priority_listeners.empty?
       end
@@ -131,7 +131,7 @@ module Eventception
       subscriber.subscribed_events.each do |event_subscribed|
         add_listener(
           event_name: event_subscribed.fetch(:event_name),
-          listener: [subscriber, event_subscribed.fetch(:listener_method)],
+          listener_handler: EventHandler.new(listener:subscriber, method:event_subscribed.fetch(:listener_method)),
           priority: event_subscribed[:priority] || 0,
         )
       end
@@ -141,7 +141,7 @@ module Eventception
       subscriber.subscribed_events.each do |event_subscribed|
         remove_listener(
           event_name: event_subscribed.fetch(:event_name),
-          listener: [subscriber, event_subscribed.fetch(:listener_method)],
+          listener_handler: EventHandler.new(listener: subscriber, method: event_subscribed.fetch(:listener_method)),
         )
       end
     end
@@ -160,10 +160,10 @@ module Eventception
     #
     def do_dispatch(listeners:, event:)
       listeners.each do |_priority, priority_listeners|
-        priority_listeners.each do |listener|
+        priority_listeners.each do |listener_handler|
           return nil if event.propagation_stopped?
 
-          listener[0].public_send(listener[1], event)
+          listener_handler.call(event)
         end
       end
 
