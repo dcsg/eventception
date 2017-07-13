@@ -131,7 +131,7 @@ module Eventception
       subscriber.subscribed_events.each do |event_subscribed|
         add_listener(
           event_name: event_subscribed.fetch(:event_name),
-          listener_handler: EventHandler.new(listener:subscriber, method:event_subscribed.fetch(:listener_method)),
+          listener_handler: EventHandler.new(listener: subscriber, method: event_subscribed.fetch(:listener_method)),
           priority: event_subscribed[:priority] || 0,
         )
       end
