@@ -79,6 +79,7 @@ dispatcher.dispatch(TodoCreatedEvent::NAME, event)
 
 ## Contributing
 
-## Kudos
+## Contributors
 
- * [Ivo Anjo](https://github.com/ivoanjo) - For the name for the project and the code reviews
+ * [Daniel Gomes](https://github.com/dcsg)
+ * [Ivo Anjo](https://github.com/ivoanjo)
