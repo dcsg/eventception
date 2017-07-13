@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.email       = ['danielcesargomes@gmail.com']
   spec.homepage    = 'https://github.com/dcsg/ruby-event-dispatcher'
   spec.summary     = 'A simple Ruby Event Dispatcher.'
-  spec.description = 'A Ruby Event Dispatcher based on Symfony Event Dispatcher.'
+  spec.description = 'A Ruby Event Dispatcher ported from Symfony Event Dispatcher.'
   spec.license     = 'MIT'
 
   spec.files         = Dir['**/*'].keep_if { |file| File.file?(file) }

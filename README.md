@@ -1,14 +1,14 @@
-## A simple Ruby Event Dispatcher
+## A lightweight Event Dispatcher system
 
 [![Build Status](https://travis-ci.org/dcsg/ruby-event-dispatcher.svg?branch=master)](https://travis-ci.org/dcsg/ruby-event-dispatcher)
 
-A Ruby Event Dispatcher based on [Symfony Event Dispatcher](https://symfony.com/doc/current/components/event_dispatcher.html).
+A lightweight Event Dispatcher system ported from [Symfony Event Dispatcher](https://symfony.com/doc/current/components/event_dispatcher.html).
 
 ## How to Install
 
 Add the following to your `Gemfile`:
 ```ruby
-gem 'event-dispatcher', git: 'https://github.com/dcsg/ruby-event-dispatcher'
+gem 'event-dispatcher'
 ```
 
 ## How to use
@@ -22,7 +22,7 @@ In general, a single dispatcher is created, which maintains a registry of listen
 When an event is dispatched via the dispatcher, it notifies all listeners registered with that event:
 
 ```ruby
-require 'event_dispatcher/dispatcher'
+require 'event_dispatcher'
 
 dispatcher = EventDispatcher::Dispatcher.new
 ```
@@ -37,15 +37,15 @@ class TodoListener
 end
 
 listener = TodoListener.new
-dispatcher.add_listener('todo.created', [listener, 'on_creation']);
+dispatcher.add_listener(event_name: 'todo.created', listener: [listener, 'on_creation']);
 ```
 
 #### Creating and Dispatching an Event
 
 ##### Creating the Event
 ```ruby
-require 'event_dispatcher/base_event'
- class TodoCreatedEvent < BaseEvent
+require 'event_dispatcher'
+ class TodoCreatedEvent < Event
     NAME = 'todo.created'.freeze
 
     attr_reader :todo
