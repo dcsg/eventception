@@ -2,14 +2,12 @@ module EventDispatcher
   class Dispatcher
     private
 
-    attr_reader :event_listeners
-    attr_reader :sorted
+    def event_listeners
+      @event_listeners ||= Hash.new { |hash, key| hash[key] = {}  }
+    end
 
-    public
-
-    def initialize
-      @event_listeners = {}
-      @sorted = {}
+    def sorted
+      @sorted ||= Hash.new { |hash, key| hash[key] = {} }
     end
 
     def dispatch(event_name:, event: EventDispatcher::BaseEvent.new)
