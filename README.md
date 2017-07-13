@@ -40,7 +40,8 @@ end
 listener = TodoListener.new
 dispatcher.add_listener(
   event_name: 'todo.created',
-  listener_handler: Eventception::EventHandler.new(listener, 'on_creation')
+  listener: listener,
+  listener_method: 'on_creation'
 )
 ```
 

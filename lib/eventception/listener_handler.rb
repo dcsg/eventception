@@ -1,9 +1,9 @@
 module Eventception
-  class EventHandler
+  class ListenerHandler
     attr_reader :listener
     attr_reader :method
 
-    def initialize(listener:, method:)
+    def initialize(listener, method)
       @listener = listener
       @method = method
     end
