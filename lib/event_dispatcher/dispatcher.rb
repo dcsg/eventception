@@ -12,6 +12,20 @@ module EventDispatcher
 
     public
 
+    # Dispatches an event to all registered listeners.
+    #
+    # == Parameters:
+    # event_name::
+    #   The name of the event to dispatch. The name of
+    #   the event is the name of the method that is
+    #   invoked on listeners.
+    # event::
+    #   The event to pass to the event handlers/listeners
+    #   If not supplied, an empty Event instance is created.
+    #
+    # == Returns:
+    #   The Event.
+    #
     def dispatch(event_name:, event: EventDispatcher::Event.new)
       return event unless listeners_for?(event_name: event_name)
 
@@ -20,6 +34,11 @@ module EventDispatcher
       event
     end
 
+    # Gets all listeners sorted by descending priority.
+    #
+    # == Returns:
+    #   All event listeners sorted by event_name and descending priority.
+    #
     def listeners
       return [] if event_listeners.empty?
 
@@ -30,6 +49,20 @@ module EventDispatcher
       sorted
     end
 
+    # Checks whether are any registered listeners.
+    #
+    # == Returns:
+    #   Boolean
+    #
+    def listeners?
+      !listeners.empty?
+    end
+
+    # Gets all listeners for the specific event sorted by descending priority.
+    #
+    # == Returns:
+    #   The event listeners for the specific event sorted by descending priority.
+    #
     def listeners_for(event_name:)
       return [] if !event_listeners.key?(event_name) || event_listeners[event_name].empty?
 
@@ -38,14 +71,25 @@ module EventDispatcher
       sorted[event_name]
     end
 
-    def listeners?
-      !listeners.empty?
-    end
-
+    # Checks whether are any registered listeners for the specific event.
+    #
+    # == Returns:
+    #   Boolean
+    #
     def listeners_for?(event_name:)
       event_listeners.key?(event_name) && !event_listeners[event_name].empty?
     end
 
+    # Add an event listener that listens to the specified event.
+    #
+    # == Parameters:
+    # event_name::
+    #   The event to listen on
+    # listener::
+    #   The listener
+    # priority::
+    #   The higher this value, the earlier an event listener will be triggered in the chain (defaults to 0)
+    #
     def add_listener(event_name:, listener:, priority: 0)
       event_listeners[event_name][priority] ||= []
       event_listeners[event_name][priority] << listener
@@ -70,6 +114,14 @@ module EventDispatcher
       event_listeners.delete(event_name) if listener_for_event.empty?
     end
 
+    # Add an event subscriber.
+    #
+    # The subscriber is asked for all the events he is interested in and added as a listener for these events.
+    #
+    # == Parameters:
+    # subscriber::
+    #   The subscriber
+    #
     def add_subscriber(subscriber:)
       subscriber.subscribed_events.each do |event_subscribed|
         add_listener(
@@ -91,6 +143,16 @@ module EventDispatcher
 
     protected
 
+    # Triggers the listeners of an event.
+    #
+    # This method can be overridden to add functionality that is executed for each listener.
+    #
+    # == Parameters:
+    # listeners::
+    #   The event listeners
+    # event::
+    #   The event
+    #
     def do_dispatch(listeners:, event:)
       listeners.each do |_priority, event_listeners|
         event_listeners.each do |listener|
@@ -103,8 +165,14 @@ module EventDispatcher
 
     private
 
+    # Sorts the internal list of listeners for the given event by priority.
+    #
+    # == Parameters:
+    # event_name::
+    #   The event name
+    #
     def sort_listeners(event_name)
-      sorted[event_name] = event_listeners[event_name].sort.to_h
+      sorted[event_name] = event_listeners[event_name].sort.reverse.to_h
     end
   end
 end
