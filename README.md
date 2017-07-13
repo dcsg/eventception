@@ -1,14 +1,14 @@
-## A simple Ruby Event Dispatcher
+## Eventception
 
-[![Build Status](https://travis-ci.org/dcsg/ruby-event-dispatcher.svg?branch=master)](https://travis-ci.org/dcsg/ruby-event-dispatcher)
+[![Build Status](https://travis-ci.org/dcsg/eventception.svg?branch=master)](https://travis-ci.org/dcsg/eventception)
 
-A Ruby Event Dispatcher based on [Symfony Event Dispatcher](https://symfony.com/doc/current/components/event_dispatcher.html).
+Eventception is a lightweight and simple Ruby Event System inspired on [Symfony Event Dispatcher](https://symfony.com/doc/current/components/event_dispatcher.html).
 
 ## How to Install
 
 Add the following to your `Gemfile`:
 ```ruby
-gem 'event-dispatcher', git: 'https://github.com/dcsg/ruby-event-dispatcher'
+gem 'eventception'
 ```
 
 ## How to use
@@ -22,9 +22,9 @@ In general, a single dispatcher is created, which maintains a registry of listen
 When an event is dispatched via the dispatcher, it notifies all listeners registered with that event:
 
 ```ruby
-require 'event_dispatcher/dispatcher'
+require 'eventception'
 
-dispatcher = EventDispatcher::Dispatcher.new
+dispatcher = Eventception::Dispatcher.new
 ```
 
 #### Adding Listeners
@@ -37,15 +37,15 @@ class TodoListener
 end
 
 listener = TodoListener.new
-dispatcher.add_listener('todo.created', [listener, 'on_creation']);
+dispatcher.add_listener(event_name: 'todo.created', listener: [listener, 'on_creation']);
 ```
 
 #### Creating and Dispatching an Event
 
 ##### Creating the Event
 ```ruby
-require 'event_dispatcher/base_event'
- class TodoCreatedEvent < BaseEvent
+require 'eventception'
+ class TodoCreatedEvent < Event
     NAME = 'todo.created'.freeze
 
     attr_reader :todo
@@ -74,3 +74,7 @@ dispatcher.dispatch(TodoCreatedEvent::NAME, event)
 ```
 
 ## Contributing
+
+## Kudos
+
+ * [Ivo Anjo](https://github.com/ivoanjo) - For the name for the project and the code reviews

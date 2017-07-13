@@ -1,17 +1,15 @@
-require 'event_dispatcher/base_event'
+# frozen_string_literal: true
 
-module EventDispatcher
-  module Examples
-    module TodoList
-      class TodoCreatedEvent < BaseEvent
-        NAME = 'todo.created'.freeze
+require 'eventception'
 
-        attr_reader :todo
+module TodoList
+  class TodoCreatedEvent < Eventception::Event
+    NAME = 'todo.created'.freeze
 
-        def initialize(todo)
-          @todo = todo
-        end
-      end
+    attr_reader :todo
+
+    def initialize(todo)
+      @todo = todo
     end
   end
 end
