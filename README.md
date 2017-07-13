@@ -78,6 +78,10 @@ dispatcher.dispatch(TodoCreatedEvent::NAME, event)
 # STDOUT: created a new to-do with title: 'My To-do'
 ```
 
+## LICENSE
+
+Licensed under [GNU LGPLv3](https://github.com/dcsg/eventception/blob/master/LICENSE)
+
 ## Contributing
 
 ## Contributors

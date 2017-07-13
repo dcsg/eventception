@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.homepage    = 'https://github.com/dcsg/eventception'
   spec.summary     = 'Eventception - a lightweight and simple Ruby Event System.'
   spec.description = 'A lightweight and simple Ruby Event System inspired on Symfony Event Dispatcher.'
-  spec.license     = 'MIT'
+  spec.license     = 'LGPL-3.0+'
 
   spec.files         = Dir['**/*'].keep_if { |file| File.file?(file) }
   spec.test_files    = Dir['spec/**/*']
