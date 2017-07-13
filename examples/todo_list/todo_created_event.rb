@@ -4,7 +4,7 @@ require 'eventception'
 
 module TodoList
   class TodoCreatedEvent < Eventception::Event
-    NAME = 'todo.created'
+    NAME = 'todo.created'.freeze
 
     attr_reader :todo
 

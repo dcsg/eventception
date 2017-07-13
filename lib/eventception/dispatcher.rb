@@ -2,7 +2,6 @@ require 'eventception/priority_listeners'
 
 module Eventception
   class Dispatcher
-
     private
 
     def event_listeners
@@ -112,9 +111,7 @@ module Eventception
       listener_for_event = event_listeners.fetch(event_name)
 
       listener_for_event.each do |priority, priority_listeners|
-        if priority_listeners.delete(listener)
-          sorted.delete(event_name)
-        end
+        sorted.delete(event_name) if priority_listeners.delete(listener)
 
         listener_for_event.delete(priority) if priority_listeners.empty?
       end
@@ -164,7 +161,7 @@ module Eventception
     def do_dispatch(listeners:, event:)
       listeners.each do |_priority, priority_listeners|
         priority_listeners.each do |listener|
-          return if event.propagation_stopped?
+          return nil if event.propagation_stopped?
 
           listener[0].public_send(listener[1], event)
         end
