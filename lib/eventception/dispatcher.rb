@@ -1,9 +1,18 @@
+require 'eventception/priority_listeners'
+
 module Eventception
   class Dispatcher
+
     private
 
     def event_listeners
-      @event_listeners ||= Hash.new { |hash, key| hash[key] = {} }
+      @event_listeners ||= Hash.new { |hash, key|
+        priority_listeners_hash = Hash.new { |priority_hash, priority_level|
+          priority_hash[priority_level] = PriorityListeners.new(priority: priority_level)
+        }
+
+        hash[key] = priority_listeners_hash
+      }
     end
 
     def sorted
@@ -91,9 +100,10 @@ module Eventception
     #   The higher this value, the earlier an event listener will be triggered in the chain (defaults to 0)
     #
     def add_listener(event_name:, listener:, priority: 0)
-      event_listeners[event_name][priority] ||= []
       event_listeners[event_name][priority] << listener
       sorted.delete(event_name)
+
+      listener
     end
 
     def remove_listener(event_name:, listener:)
