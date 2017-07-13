@@ -1,4 +1,4 @@
-require 'event_dispatcher/base_event'
+require 'event_dispatcher'
 
 module EventDispatcher
   module Examples

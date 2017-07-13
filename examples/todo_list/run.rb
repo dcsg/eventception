@@ -1,4 +1,4 @@
-require 'event_dispatcher/dispatcher'
+require 'event_dispatcher'
 require_relative 'todo_created_event'
 require_relative 'todo_listener'
 require_relative 'todo'
