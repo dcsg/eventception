@@ -1,11 +1,13 @@
 require 'spec_helper'
 require 'support/listener'
 require 'support/subscriber'
+require 'support/test_event'
 
 describe EventDispatcher::Dispatcher do
   let(:listener) { EventDispatcher::Support::Listener.new }
+  let(:listener_callable) { [listener, 'on_before'] }
   let(:subscriber) { EventDispatcher::Support::Subscriber.new }
-  let(:event_name) { :on_after }
+  let(:event_name) { EventDispatcher::Support::TestEvent::BEFORE }
   let(:priority) { 0 }
 
   describe '#listeners?' do
@@ -18,7 +20,7 @@ describe EventDispatcher::Dispatcher do
 
       context 'and has one or more listeners associated' do
         before do
-          subject.add_listener(event_name: event_name, listener: listener)
+          subject.add_listener(event_name: event_name, listener: listener_callable)
         end
 
         it do
@@ -30,22 +32,22 @@ describe EventDispatcher::Dispatcher do
     context 'when an event_name is provided' do
       context 'and does not have any listener associated' do
         it do
-          expect(subject.listeners?(event_name: event_name)).to be false
+          expect(subject.listeners_for?(event_name: event_name)).to be false
         end
       end
 
       context 'and has one or more listeners associated' do
         before do
-          subject.add_listener(event_name: event_name, listener: listener)
+          subject.add_listener(event_name: event_name, listener: listener_callable)
         end
 
         it do
-          expect(subject.listeners?(event_name: event_name)).to be true
+          expect(subject.listeners_for?(event_name: event_name)).to be true
         end
 
         context 'when a different event_name is provided without any listener associated' do
           it do
-            expect(subject.listeners?(event_name: :invalid)).to be false
+            expect(subject.listeners_for?(event_name: :invalid)).to be false
           end
         end
       end
@@ -55,14 +57,14 @@ describe EventDispatcher::Dispatcher do
   describe '#add_listener' do
     context 'when no priority is provided' do
       before do
-        subject.add_listener(event_name: event_name, listener: listener)
+        subject.add_listener(event_name: event_name, listener: listener_callable)
       end
 
       it 'adds a new listener to the event_name with 0 priority' do
-        listeners = subject.listeners(event_name: event_name)
+        listeners = subject.listeners_for(event_name: event_name)
 
         expect(listeners[priority].count).to eq 1
-        expect(listeners[priority].first).to eq listener
+        expect(listeners[priority].first).to eq listener_callable
       end
     end
 
@@ -70,14 +72,14 @@ describe EventDispatcher::Dispatcher do
       let(:priority) { 10 }
 
       before do
-        subject.add_listener(event_name: event_name, listener: listener, priority: priority)
+        subject.add_listener(event_name: event_name, listener: listener_callable, priority: priority)
       end
 
       it 'adds a new listener to the event_name with a different priority' do
-        listeners = subject.listeners(event_name: event_name)
+        listeners = subject.listeners_for(event_name: event_name)
 
         expect(listeners[priority].count).to eq 1
-        expect(listeners[priority].first).to eq listener
+        expect(listeners[priority].first).to eq listener_callable
       end
     end
   end
@@ -85,7 +87,7 @@ describe EventDispatcher::Dispatcher do
   describe '#listeners' do
     context 'when listeners exist' do
       before do
-        subject.add_listener(event_name: event_name, listener: listener)
+        subject.add_listener(event_name: event_name, listener: listener_callable)
       end
 
       context 'when no event_name is provided' do
@@ -98,38 +100,42 @@ describe EventDispatcher::Dispatcher do
 
       context 'when an event_name is provided' do
         it 'adds a new listener to the event_name with 10 priority' do
-          listeners = subject.listeners(event_name: event_name)
+          listeners = subject.listeners_for(event_name: event_name)
 
           expect(listeners[priority].count).to eq 1
-          expect(listeners[priority].first).to eq listener
+          expect(listeners[priority].first).to eq listener_callable
         end
       end
     end
   end
 
   describe '#remove_listener' do
-    let(:listener2) { 'listener 2' }
+    let(:listener_callable2) { [listener, 'on_after'] }
 
     context 'when two listeners exist for the same event_name' do
       before do
-        subject.add_listener(event_name: event_name, listener: listener)
-        subject.add_listener(event_name: event_name, listener: listener2)
+        subject.add_listener(event_name: event_name, listener: listener_callable)
+        subject.add_listener(event_name: event_name, listener: listener_callable2)
+      end
+
+      it 'has two listeners' do
+        expect(subject.listeners_for?(event_name: event_name)).to be true
+        expect(subject.listeners_for(event_name: event_name)[priority].size).to eq 2
       end
 
       context 'and one of the listeners is removed' do
         it 'has only one listener' do
-          expect(subject.listeners(event_name: event_name)[priority].size).to eq 2
-          subject.remove_listener(event_name: event_name, listener: listener)
-          expect(subject.listeners(event_name: event_name)[priority].size).to eq 1
+          subject.remove_listener(event_name: event_name, listener: listener_callable)
+          expect(subject.listeners_for(event_name: event_name)[priority].size).to eq 1
         end
       end
 
       context 'and both listeners are removed' do
         it 'has zero listeners' do
-          expect(subject.listeners(event_name: event_name)[priority].size).to eq 2
-          subject.remove_listener(event_name: event_name, listener: listener)
-          subject.remove_listener(event_name: event_name, listener: listener2)
-          expect(subject.listeners(event_name: event_name)[priority].size).to eq 0
+          subject.remove_listener(event_name: event_name, listener: listener_callable)
+          subject.remove_listener(event_name: event_name, listener: listener_callable2)
+          expect(subject.listeners_for?(event_name: event_name)).to be false
+          expect(subject.listeners_for(event_name: event_name).size).to eq 0
         end
       end
     end
@@ -154,11 +160,40 @@ describe EventDispatcher::Dispatcher do
       subject.add_subscriber(subscriber: subscriber)
     end
 
-    it 'removes the listeners from the subscriber' do
+    it 'removes the subscriber listeners' do
       expect(subject.listeners.size).to eq 2
       subject.remove_subscriber(subscriber: subscriber)
-      subject.listeners.each do |_event_name, listener|
-        expect(listener[priority].size).to eq 0
+      expect(subject.listeners?).to be false
+    end
+  end
+
+  describe '#dispatch' do
+    context 'when using subscribers' do
+      before do
+        subject.add_subscriber(subscriber: subscriber)
+      end
+
+      it 'calls the subscriber methods' do
+        expect(subscriber).to receive('on_before').and_call_original
+        expect(subscriber).to receive('on_after').and_call_original
+
+        expect {
+          subject.dispatch(event_name: EventDispatcher::Support::TestEvent::BEFORE)
+        }.to output(/on before, propagation stopped/).to_stdout
+        expect {
+          subject.dispatch(event_name: EventDispatcher::Support::TestEvent::AFTER)
+        }.to output(/on after, propagation stopped/).to_stdout
+      end
+    end
+
+    context 'when using listeners' do
+      before do
+        subject.add_listener(event_name: event_name, listener: listener_callable)
+      end
+
+      it 'executes the listener method' do
+        expect(listener).to receive(listener_callable[1]).and_call_original
+        expect { subject.dispatch(event_name: event_name) }.to output(/before/).to_stdout
       end
     end
   end
