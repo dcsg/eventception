@@ -1,0 +1,20 @@
+engines:
+  rubocop:
+    enabled: true
+    exclude_paths: []
+  eslint:
+    enabled: true
+  duplication:
+    enabled: true
+    config:
+      languages:
+        - ruby:
+ratings:
+  paths:
+    - lib/**
+exclude_paths:
+  - "examples/"
+  - "spec/"
+  - "CHANGELOG.md"
+  - "README.md"
+  - "Gemfile"
