@@ -1,6 +1,7 @@
 env:
   global:
     - SIMPLECOV_ENABLED=1
+    - JRUBY_OPTS=--dev
     - CC_TEST_REPORTER_ID=b7cacaaf8cd892926f18b6a494de52ade74bfc7f68befcba99b5adaa3823b662
     - GIT_COMMITTED_AT=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then git log -1 --pretty=format:%ct; else git log -1 --skip 1 --pretty=format:%ct; fi)
 language: ruby
