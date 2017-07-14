@@ -91,6 +91,10 @@ module Eventception
 
     # Gets all listeners for the specific event sorted by descending priority.
     #
+    # == Parameters:
+    # event_name::
+    #   The name of the event
+    #
     # == Returns:
     #   The event listeners for the specific event sorted by descending priority.
     #
@@ -103,6 +107,10 @@ module Eventception
     end
 
     # Checks whether are any registered listeners for the specific event.
+    #
+    # == Parameters:
+    # event_name::
+    #   The name of the event
     #
     # == Returns:
     #   Boolean
@@ -118,8 +126,13 @@ module Eventception
     #   The event to listen on
     # listener::
     #   The listener
+    # listener_method::
+    #   The name of the method to be executed in the listener
     # priority::
     #   The higher this value, the earlier an event listener will be triggered in the chain (defaults to 0)
+    #
+    # == Returns:
+    #   Nil
     #
     def add_listener(event_name:, listener:, listener_method:, priority: 0)
       event_listeners[event_name][priority] << ListenerHandler.new(listener, listener_method)
@@ -128,6 +141,19 @@ module Eventception
       nil
     end
 
+    # Removes an event listener from the specified events.
+    #
+    # == Parameters:
+    # event_name::
+    #   The event to listen on
+    # listener::
+    #   The listener
+    # listener_method::
+    #   The name of the method to be executed in the listener
+    #
+    # == Returns:
+    #   Nil
+    #
     def remove_listener(event_name:, listener:, listener_method:)
       return unless listeners_for?(event_name: event_name)
 
@@ -140,6 +166,8 @@ module Eventception
       end
 
       event_listeners.delete(event_name) if listener_for_event.empty?
+
+      nil
     end
 
     # Add an event subscriber.
@@ -150,6 +178,9 @@ module Eventception
     # subscriber::
     #   The subscriber
     #
+    # == Returns:
+    #   Nil
+    #
     def add_subscriber(subscriber:)
       subscriber.subscribed_events.each do |event_subscribed|
         add_listener(
@@ -159,8 +190,21 @@ module Eventception
           priority: event_subscribed[:priority] || 0,
         )
       end
+
+      nil
     end
 
+    # Removes an event subscriber.
+    #
+    # The subscriber is asked for all the events he is interested in and added as a listener for these events.
+    #
+    # == Parameters:
+    # subscriber::
+    #   The subscriber
+    #
+    # == Returns:
+    #   Nil
+    #
     def remove_subscriber(subscriber:)
       subscriber.subscribed_events.each do |event_subscribed|
         remove_listener(
@@ -169,6 +213,8 @@ module Eventception
           listener_method: event_subscribed.fetch(:listener_method),
         )
       end
+
+      nil
     end
 
     protected
@@ -182,6 +228,9 @@ module Eventception
     #   The event listeners
     # event::
     #   The event
+    #
+    # == Returns:
+    #   Nil
     #
     def do_dispatch(listeners:, event:)
       listeners.each do |_priority, priority_listeners|
@@ -203,8 +252,13 @@ module Eventception
     # event_name::
     #   The event name
     #
+    # == Returns:
+    #   Nil
+    #
     def sort_listeners(event_name)
       sorted[event_name] = event_listeners[event_name].sort_by { |key, _| -key }.to_h
+
+      nil
     end
   end
 end

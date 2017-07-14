@@ -26,3 +26,6 @@ Style/TrailingCommaInArguments:
 
 Style/BlockDelimiters:
   EnforcedStyle: semantic
+
+Style/SpaceInsideHashLiteralBraces:
+  Enabled: false
