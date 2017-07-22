@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>
+  File: README
+  
+    &mdash; Eventception - A lightweight and simple Ruby Event System
+  
+</title>
+
+  <link rel="stylesheet" href="css/style.css" type="text/css" charset="utf-8" />
+
+  <link rel="stylesheet" href="css/common.css" type="text/css" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  pathId = "README";
+  relpath = '';
+</script>
+
+
+  <script type="text/javascript" charset="utf-8" src="js/jquery.js"></script>
+
+  <script type="text/javascript" charset="utf-8" src="js/app.js"></script>
+
+
+  </head>
+  <body>
+    <div class="nav_wrap">
+      <iframe id="nav" src="file_list.html?1"></iframe>
+      <div id="resizer"></div>
+    </div>
+
+    <div id="main" tabindex="-1">
+      <div id="header">
+        <div id="menu">
+  
+    <a href="_index.html">Index</a> &raquo; 
+    <span class="title">File: README</span>
+  
+</div>
+
+        <div id="search">
+  
+    <a class="full_list_link" id="class_list_link"
+        href="class_list.html">
+
+        <svg width="24" height="24">
+          <rect x="0" y="4" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="12" width="24" height="4" rx="1" ry="1"></rect>
+          <rect x="0" y="20" width="24" height="4" rx="1" ry="1"></rect>
+        </svg>
+    </a>
+  
+</div>
+        <div class="clear"></div>
+      </div>
+
+      <div id="content"><div id='filecontents'>
+<h2 id="label-Eventception">Eventception</h2>
+
+<p><a href="https://travis-ci.org/dcsg/eventception"><img
+src="https://travis-ci.org/dcsg/eventception.svg?branch=master"></a> <a
+href="https://codeclimate.com/github/dcsg/eventception"><img
+src="https://codeclimate.com/github/dcsg/eventception/badges/gpa.svg"></a>
+<a href="https://codeclimate.com/github/dcsg/eventception/coverage"><img
+src="https://codeclimate.com/github/dcsg/eventception/badges/coverage.svg"></a></p>
+
+<p>Eventception is a lightweight and simple Ruby Event System inspired on <a
+href="https://symfony.com/doc/current/components/event_dispatcher.html">Symfony
+Event Dispatcher</a>.</p>
+
+<h2 id="label-How+to+Install">How to Install</h2>
+
+<p>Add the following to your <code>Gemfile</code>: <code>ruby gem
+&#39;eventception&#39;, &#39;~&gt; 0.0.1&#39; </code></p>
+
+<h2 id="label-How+to+use">How to use</h2>
+
+<h4 id="label-Events">Events</h4>
+
+<p>When an event is dispatched, it&#39;s identified by a unique name, which
+any number of listeners might be listening to. An Event instance is also
+created and passed to all of the listeners. As you&#39;ll see later, the
+Event object itself often contains data about the event being dispatched.</p>
+
+<h4 id="label-The+Dispatcher">The Dispatcher</h4>
+
+<p>The dispatcher is the central object of the event dispatcher system. In
+general, a single dispatcher is created, which maintains a registry of
+listeners. When an event is dispatched via the dispatcher, it notifies all
+listeners registered with that event:</p>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>eventception</span><span class='tstring_end'>&#39;</span></span>
+
+<span class='id identifier rubyid_dispatcher'>dispatcher</span> <span class='op'>=</span> <span class='const'><span class='object_link'><a href="Eventception.html" title="Eventception (module)">Eventception</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Eventception/Dispatcher.html" title="Eventception::Dispatcher (class)">Dispatcher</a></span></span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+</code></pre>
+
+<h4 id="label-Adding+Listeners">Adding Listeners</h4>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>eventception</span><span class='tstring_end'>&#39;</span></span>
+<span class='kw'>class</span> <span class='const'>TodoListener</span>
+  <span class='kw'>def</span> <span class='id identifier rubyid_on_creation'>on_creation</span><span class='lparen'>(</span><span class='id identifier rubyid_event'>event</span><span class='rparen'>)</span>
+    <span class='id identifier rubyid_puts'>puts</span> <span class='tstring'><span class='tstring_beg'>&quot;</span><span class='tstring_content'>created a new to-do with title: &#39;</span><span class='embexpr_beg'>#{</span><span class='id identifier rubyid_event'>event</span><span class='period'>.</span><span class='id identifier rubyid_todo'>todo</span><span class='period'>.</span><span class='id identifier rubyid_title'>title</span><span class='embexpr_end'>}</span><span class='tstring_content'>&#39;</span><span class='tstring_end'>&quot;</span></span>
+  <span class='kw'>end</span>
+<span class='kw'>end</span>
+
+<span class='id identifier rubyid_listener'>listener</span> <span class='op'>=</span> <span class='const'>TodoListener</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span>
+<span class='id identifier rubyid_dispatcher'>dispatcher</span><span class='period'>.</span><span class='id identifier rubyid_add_listener'>add_listener</span><span class='lparen'>(</span>
+  <span class='label'>event_name:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>todo.created</span><span class='tstring_end'>&#39;</span></span><span class='comma'>,</span>
+  <span class='label'>listener:</span> <span class='id identifier rubyid_listener'>listener</span><span class='comma'>,</span>
+  <span class='label'>listener_method:</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>on_creation</span><span class='tstring_end'>&#39;</span></span>
+<span class='rparen'>)</span>
+</code></pre>
+
+<h4 id="label-Creating+and+Dispatching+an+Event">Creating and Dispatching an Event</h4>
+
+<h5 id="label-Creating+the+Event">Creating the Event</h5>
+
+<pre class="code ruby"><code class="ruby"><span class='id identifier rubyid_require'>require</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>eventception</span><span class='tstring_end'>&#39;</span></span>
+<span class='kw'>class</span> <span class='const'>TodoCreatedEvent</span> <span class='op'>&lt;</span> <span class='const'><span class='object_link'><a href="Eventception.html" title="Eventception (module)">Eventception</a></span></span><span class='op'>::</span><span class='const'><span class='object_link'><a href="Eventception/Event.html" title="Eventception::Event (class)">Event</a></span></span>
+    <span class='const'>NAME</span> <span class='op'>=</span> <span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>todo.created</span><span class='tstring_end'>&#39;</span></span><span class='period'>.</span><span class='id identifier rubyid_freeze'>freeze</span>
+
+    <span class='id identifier rubyid_attr_reader'>attr_reader</span> <span class='symbol'>:todo</span>
+
+    <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='id identifier rubyid_todo'>todo</span><span class='rparen'>)</span>
+      <span class='ivar'>@todo</span> <span class='op'>=</span> <span class='id identifier rubyid_todo'>todo</span>
+    <span class='kw'>end</span>
+<span class='kw'>end</span>
+</code></pre>
+
+<h5 id="label-Dispatching+the+Event">Dispatching the Event</h5>
+
+<pre class="code ruby"><code class="ruby"><span class='kw'>class</span> <span class='const'>Todo</span>
+    <span class='id identifier rubyid_attr_reader'>attr_reader</span> <span class='symbol'>:title</span>
+
+    <span class='kw'>def</span> <span class='id identifier rubyid_initialize'>initialize</span><span class='lparen'>(</span><span class='label'>title:</span><span class='rparen'>)</span>
+      <span class='ivar'>@title</span> <span class='op'>=</span> <span class='id identifier rubyid_title'>title</span>
+    <span class='kw'>end</span>
+<span class='kw'>end</span>
+
+<span class='id identifier rubyid_todo'>todo</span> <span class='op'>=</span> <span class='const'>Todo</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='tstring'><span class='tstring_beg'>&#39;</span><span class='tstring_content'>My To-do</span><span class='tstring_end'>&#39;</span></span><span class='rparen'>)</span>
+<span class='id identifier rubyid_event'>event</span> <span class='op'>=</span> <span class='const'>TodoCreatedEvent</span><span class='period'>.</span><span class='id identifier rubyid_new'>new</span><span class='lparen'>(</span><span class='id identifier rubyid_todo'>todo</span><span class='rparen'>)</span>
+<span class='id identifier rubyid_dispatcher'>dispatcher</span><span class='period'>.</span><span class='id identifier rubyid_dispatch'>dispatch</span><span class='lparen'>(</span><span class='const'>TodoCreatedEvent</span><span class='op'>::</span><span class='const'>NAME</span><span class='comma'>,</span> <span class='id identifier rubyid_event'>event</span><span class='rparen'>)</span>
+
+<span class='comment'># STDOUT: created a new to-do with title: &#39;My To-do&#39;
+</span></code></pre>
+
+<h2 id="label-LICENSE">LICENSE</h2>
+
+<p>Licensed under <a
+href="https://github.com/dcsg/eventception/blob/master/LICENSE">GNU
+LGPLv3</a></p>
+
+<h2 id="label-Contributing">Contributing</h2>
+<ol><li>
+<p>Fork it</p>
+</li><li>
+<p>Create your feature branch (git checkout -b my-new-feature)</p>
+</li><li>
+<p>Commit your changes (git commit -am &#39;Add some feature&#39;)</p>
+</li><li>
+<p>Push to the branch (git push origin my-new-feature)</p>
+</li><li>
+<p>Create new Pull Request</p>
+</li></ol>
+
+<h2 id="label-Contributors">Contributors</h2>
+<ul><li>
+<p><a href="https://github.com/dcsg">Daniel Gomes</a></p>
+</li><li>
+<p><a href="https://github.com/ivoanjo">Ivo Anjo</a></p>
+</li></ul>
+</div></div>
+
+      <div id="footer">
+  Generated on Sat Jul 22 22:09:26 2017 by
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool" target="_parent">yard</a>
+  0.9.9 (ruby-2.4.1).
+</div>
+
+    </div>
+  </body>
+</html>

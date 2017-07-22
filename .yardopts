@@ -1,0 +1,8 @@
+--exclude /examples
+--protected
+--no-private
+--title "Eventception - A lightweight and simple Ruby Event System"
+--output-dir docs
+-
+CHANGELOG.md
+LICENSE

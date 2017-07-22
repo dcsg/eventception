@@ -13,6 +13,7 @@ ratings:
   paths:
     - lib/**
 exclude_paths:
+  - "docs/"
   - "examples/"
   - "spec/"
   - "CHANGELOG.md"
