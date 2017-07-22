@@ -8,7 +8,7 @@ Eventception is a lightweight and simple Ruby Event System inspired on [Symfony 
 
 Add the following to your `Gemfile`:
 ```ruby
-gem 'eventception', '~> 0.0.1'
+gem 'eventception', '~> 0.1.0'
 ```
 
 ## How to use
