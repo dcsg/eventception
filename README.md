@@ -13,6 +13,8 @@ gem 'eventception', '~> 0.0.1'
 
 ## How to use
 
+You can also read the [documentation](https://dcsg.github.io/eventception/).
+
 #### Events
 When an event is dispatched, it's identified by a unique name, which any number of listeners might be listening to. An Event instance is also created and passed to all of the listeners. As you'll see later, the Event object itself often contains data about the event being dispatched.
 
